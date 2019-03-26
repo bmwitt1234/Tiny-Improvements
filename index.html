@@ -1,0 +1,139 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+</head>
+<body>
+    <h1>Tiny Improvements</h1>
+
+    <!-- Button trigger modal -->
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+    Give Kudos
+  </button>
+  
+  <!-- Modal -->
+  <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+            <form id="add-kudos-form">
+                <div>
+                    <select id="select-sender">
+                        <option selected disabled>Select Sender</option>
+                    </select>
+                </div>
+           
+              
+                <div>
+                    Title:<br>
+                    <input type="text" id="title">
+                    <br>
+                    Kudos Message:<br>
+                    <textarea type="text" id="message"></textarea>
+                </div>
+                <div>
+                    <select id="select-reciever">
+                        <option selected disabled>Select Reciever</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-primary">Give Kudos</button>
+              </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
+
+<script>
+    $.get("/all-users", function(data){
+        console.log(data);
+        for (let i = 0; i<data.length; i++){
+             // Create Option HTML tag
+            var newOption = $("<option>");
+            // Add a value attribute to the option we just created.
+            newOption.attr("value", data[i].name);
+            // Add text to the option for users to see.
+            newOption.text(data[i].name);
+            // Append new option to the ID of select sender which is a select tag.
+            $("#select-sender").append(newOption);
+        
+        };
+        for (let i = 0; i<data.length; i++){
+             // Create Option HTML tag
+            var newOption = $("<option>");
+            // Add a value attribute to the option we just created.
+            newOption.attr("value", data[i].name);
+            // Add text to the option for users to see.
+            newOption.text(data[i].name);
+            // Append new option to the ID of select sender which is a select tag.
+            
+            $("#select-reciever").append(newOption);
+        };
+    });
+    
+    $.get("/all-kudos", function(data){
+        console.log(data);
+        // Loop through data which is Kudos and append them somewhere to HTML.
+    })
+
+
+    $("#add-kudos-form").on("submit", function(event){
+        event.preventDefault()
+        // Get values from form.
+
+        
+
+        // Use values in post requests.
+        
+        var payload = {
+        sender : $('#select-sender').val(),
+        reciever : $('#select-reciever').val(),
+        title : $('#title').val(),
+        kudosMessage : $('#message').val(),
+        }
+        console.log(payload)
+
+        $.post("/addkudo", payload, function(data){
+            console.log(data);
+            location.reload()
+         });
+    })
+
+
+
+
+// Make event for the Kudos form.
+// In the event get the values from the form.
+// Make a post request with thsoe values.
+
+
+</script>
+
+<style>
+    #add-kudos-form{
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        
+    }
+</style>
