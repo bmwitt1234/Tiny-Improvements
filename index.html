@@ -20,6 +20,7 @@
 <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
     Give Kudos
   </button>
+  <div id="kudo-div"></div>
   
   <!-- Modal -->
   <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -95,6 +96,14 @@
     $.get("/all-kudos", function(data){
         console.log(data);
         // Loop through data which is Kudos and append them somewhere to HTML.
+        for (let i = 0; i < data.length; i++) {
+            const newDiv = $('<div>');
+            newDiv.append(`<p>${data[i].title}</p>`);
+            newDiv.append(`<p>${data[i].kudosMessage}</p>`);
+            newDiv.append(`<p>${data[i].sender}</p>`);
+            newDiv.append(`<p>${data[i].reciever}</p>`);
+        $('#kudo-div').append(newDiv);
+        }
     })
 
 
